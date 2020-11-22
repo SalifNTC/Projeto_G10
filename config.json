@@ -6,7 +6,7 @@
   "image_directory": "./images/",
 
   "background_color": "black",
-  "step_color": "turquoise",pypthu
+  "step_color": "turquoise",
   "view_color": "red",
 
   "start_position": [7,8],
