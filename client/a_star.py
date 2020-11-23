@@ -146,6 +146,7 @@ class Agent:
         return new_pos
 
     def distancia(self,x1,y1):
+        """metodo calcular a distancia"""
         x2, y2=self.getGoalPosition()
         return abs(x1-x2)+ abs(y1-y2)
 
@@ -153,7 +154,7 @@ class Agent:
     def getNode(self,parent_node,action):
         state = self.step(parent_node.getState(),action)
         g = parent_node.getPathCost() + self.getPatchCost(state)
-        h=self.distancia(*state)
+        h=self.distancia(*state) #Calcular a heuristica
         return Node(state, parent_node, action, g,g+h)
 
     def printNodes(self,type,nodes,i):
@@ -200,8 +201,11 @@ class Agent:
             self.mark_frontier(self.getNode(root, dir))
 
         # test
+
         self.printNodes("Frontier", self.frontier_nodes, i)
         self.printNodes("Visitied", self.visited_nodes, i)
+
+
 
         # Cycle expanding nodes following the sequence in frontier nodes.
         for i in range (150):
