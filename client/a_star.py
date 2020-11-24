@@ -26,6 +26,9 @@ class Queue:
     def getQueue(self):
         return self.queue_data
 
+    def sortQueue(self,key):
+        return self.queue_data.sort(key=key)
+
 # SEARCH AGENT
 
 class Node:
@@ -35,6 +38,7 @@ class Node:
         self.action =action
         self.path_cost = path_cost
         self.f=f
+
     def getf(self):
         return  self.f
 
@@ -151,6 +155,8 @@ class Agent:
         return abs(x1-x2)+ abs(y1-y2)
 
 
+
+
     def getNode(self,parent_node,action):
         state = self.step(parent_node.getState(),action)
         g = parent_node.getPathCost() + self.getPatchCost(state)
@@ -162,6 +168,9 @@ class Agent:
         print("state | path cost")
         for node in nodes.getQueue():
             print(node.getState(),"|", node.getPathCost())
+
+
+
 
     def printPath(self, node):
         n = node
@@ -201,7 +210,8 @@ class Agent:
             self.mark_frontier(self.getNode(root, dir))
 
         # test
-
+        #ordenar a lista de nós fronteira
+        self.frontier_nodes.sortQueue(Node.getf())
         self.printNodes("Frontier", self.frontier_nodes, i)
         self.printNodes("Visitied", self.visited_nodes, i)
 
