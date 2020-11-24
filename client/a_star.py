@@ -27,7 +27,7 @@ class Queue:
         return self.queue_data
 
     def sortQueue(self,key):
-        return self.queue_data.sort(key=key)
+        return self.queue_data.sort(key=lambda x: x.get('key'))
 
 # SEARCH AGENT
 
@@ -209,8 +209,10 @@ class Agent:
             self.frontier_nodes.insert(self.getNode(root, dir))
             self.mark_frontier(self.getNode(root, dir))
 
+
         # test
         #ordenar a lista de nós fronteira
+
         self.frontier_nodes.sortQueue(Node.getf())
         self.printNodes("Frontier", self.frontier_nodes, i)
         self.printNodes("Visitied", self.visited_nodes, i)
@@ -218,7 +220,8 @@ class Agent:
 
 
         # Cycle expanding nodes following the sequence in frontier nodes.
-        for i in range (150):
+        while self.goalNodePos!=self.state:
+
 
             node_to_expand = self.frontier_nodes.pop()
             self.state = node_to_expand.getState()
