@@ -1,6 +1,7 @@
 import client
 import ast
 import random
+import math
 
 VISITED_COLOR = "#400000"
 FRONTIER_COLOR = "red3"
@@ -27,7 +28,7 @@ class Queue:
         return self.queue_data
 
     def sortQueue(self,key):
-        return self.queue_data.sort(key=lambda x: x.get('key'))
+        return self.queue_data.sort(key=key)
 
 # SEARCH AGENT
 
@@ -152,7 +153,7 @@ class Agent:
     def distancia(self,x1,y1):
         """metodo calcular a distancia"""
         x2, y2=self.getGoalPosition()
-        return abs(x1-x2)+ abs(y1-y2)
+        return math.sqrt(abs(x1-x2)**2+ abs(y1-y2)**2)
 
 
 
@@ -165,9 +166,9 @@ class Agent:
 
     def printNodes(self,type,nodes,i):
         print(type," (round ",i," )")
-        print("state | path cost")
+        print("state | path cost | f(n)")
         for node in nodes.getQueue():
-            print(node.getState(),"|", node.getPathCost())
+            print(node.getState(),"|", node.getPathCost(), "|", node.getf())
 
 
 
@@ -213,7 +214,7 @@ class Agent:
         # test
         #ordenar a lista de nós fronteira
 
-        self.frontier_nodes.sortQueue(Node.getf())
+        self.frontier_nodes.sortQueue(Node.getf)
         self.printNodes("Frontier", self.frontier_nodes, i)
         self.printNodes("Visitied", self.visited_nodes, i)
 
