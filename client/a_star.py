@@ -165,9 +165,9 @@ class Agent:
 
     def printNodes(self,type,nodes,i):
         print(type," (round ",i," )")
-        print("state | path cost")
+        print("state | path cost | f(n)")
         for node in nodes.getQueue():
-            print(node.getState(),"|", node.getPathCost())
+            print(node.getState(),"|", node.getPathCost(), "|" , node.getf())
 
 
 
@@ -211,7 +211,7 @@ class Agent:
 
         # test
         #ordenar a lista de nós fronteira
-        self.frontier_nodes.sortQueue(Node.getf())
+        self.frontier_nodes.sortQueue(key=lambda x: x.getf())
         self.printNodes("Frontier", self.frontier_nodes, i)
         self.printNodes("Visitied", self.visited_nodes, i)
 
