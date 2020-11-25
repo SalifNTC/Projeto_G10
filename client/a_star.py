@@ -118,8 +118,8 @@ class Agent:
     def getObjectsAt(self, x, y):
         msg = self.c.execute("info", str(x)+","+str(y))
         return ast.literal_eval(msg)
-
-    # COM MODIFICAÇÕES NO SERVIDOR
+    #
+    # # COM MODIFICAÇÕES NO SERVIDOR
     def isVisitable(self, x, y):
         return all(obj != "obstacle" and obj != "bomb" for obj in self.getObjectsAt(x,y))
 
@@ -153,7 +153,7 @@ class Agent:
     def distancia(self,x1,y1):
         """metodo calcular a distancia"""
         x2, y2=self.getGoalPosition()
-        return math.sqrt(abs(x1-x2)**2+ abs(y1-y2)**2)
+        return  math.sqrt(abs(x1-x2)**2+ abs(y1-y2)**2)
 
 
 
@@ -235,8 +235,7 @@ class Agent:
             for dir in ["north", "east", "west", "south"]:
                 new_node = self.getNode(node_to_expand, dir)
                 if new_node.getState() not in [n.getState() for n in self.frontier_nodes.getQueue()]\
-                        and new_node.getState() not in [n.getState() for n in self.visited_nodes.getQueue()]\
-                        and self.isVisitable(*new_node.getState()):
+                        and new_node.getState() not in [n.getState() for n in self.visited_nodes.getQueue()]:
                     self.frontier_nodes.insert(new_node)
                     self.mark_frontier(new_node)
                     if new_node.getState() == self.goalNodePos:
