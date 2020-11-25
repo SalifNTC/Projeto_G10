@@ -44,17 +44,17 @@
     "A": "agent start position (only 1)"
   },
   "object_map":[
-    "               ",
-    "               ",
-    "   G           ",
-    "               ",
-    "          A    ",
-    "               ",
-    "               ",
-    "               ",
-    "               ",
-    "               ",
-    "               "
+    "OOOOOOOOOOOOOOO",
+    "O     OO   O  O",
+    "O  G   O   O  O",
+    "O      O   O  O",
+    "O      O      O",
+    "O      O      O",
+    "O      O  B   O",
+    "OOOO          O",
+    "O   IIII      O",
+    "O  B     A    O",
+    "OOOOOOOOOOOOOOO"
   ],
   "weight_dictionary": {
     "1": 1,

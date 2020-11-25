@@ -153,7 +153,7 @@ class Agent:
     def distancia(self,x1,y1):
         """metodo calcular a distancia"""
         x2, y2=self.getGoalPosition()
-        return  math.sqrt(abs(x1-x2)**2+ abs(y1-y2)**2)
+        return  abs(x1-x2)+ abs(y1-y2)
 
 
 
@@ -209,12 +209,14 @@ class Agent:
         for dir in ["north","east","south","west"]:
             self.frontier_nodes.insert(self.getNode(root, dir))
             self.mark_frontier(self.getNode(root, dir))
+            self.frontier_nodes.sortQueue(Node.getf)
+
 
 
         # test
         #ordenar a lista de nós fronteira
 
-        self.frontier_nodes.sortQueue(Node.getf)
+
         self.printNodes("Frontier", self.frontier_nodes, i)
         self.printNodes("Visitied", self.visited_nodes, i)
 
