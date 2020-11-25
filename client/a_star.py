@@ -9,8 +9,9 @@ FRONTIER_COLOR = "red3"
 # AUXILIAR
 
 class Queue:
-    def __init__(self):
-         self.queue_data = []
+    def __init__(self, funcao_ordenacao):
+        self.queue_data = []
+        self.funcao_ordenacao = funcao_ordenacao
 
     def isEmpty(self):
         if len(self.queue_data) == 0:
@@ -19,6 +20,7 @@ class Queue:
             return False
 
     def pop(self):
+        self.queue_data.sort(key=self.funcao_ordenacao)
         return self.queue_data.pop(0)
 
     def insert(self,element):
@@ -27,8 +29,8 @@ class Queue:
     def getQueue(self):
         return self.queue_data
 
-    def sortQueue(self,key):
-        return self.queue_data.sort(key=key)
+#    def sortQueue(self,key):
+#        return self.queue_data.sort(key=key)
 
 # SEARCH AGENT
 
@@ -64,12 +66,15 @@ class Agent:
         self.c = client.Client('127.0.0.1', 50001)
         self.res = self.c.connect()
         random.seed()  # To become true random, a different seed is used! (clock time)
-        self.visited_nodes = Queue()
-        self.frontier_nodes = Queue()
+        self.visited_nodes = Queue(lambda x: x)
+        self.frontier_nodes = Queue(Node.getf)
         self.weightMap =[]
         self.goalNodePos =(0,0)
         self.state = (0,0)
         self.maxCoord = (0,0)
+        self.obstacles = self.getObstacles()
+
+
 
 
 
@@ -114,14 +119,9 @@ class Agent:
         print('Received map of obstacles:', obst)
         return obst
 
-    # COM MODIFICAÇÕES NO SERVIDOR
-    def getObjectsAt(self, x, y):
-        msg = self.c.execute("info", str(x)+","+str(y))
-        return ast.literal_eval(msg)
-    #
-    # # COM MODIFICAÇÕES NO SERVIDOR
+
     def isVisitable(self, x, y):
-        return all(obj != "obstacle" and obj != "bomb" for obj in self.getObjectsAt(x,y))
+        return self.obstacles[x][y] == 0
 
     def step(self,pos,action):
         if action == "east":
@@ -209,7 +209,6 @@ class Agent:
         for dir in ["north","east","south","west"]:
             self.frontier_nodes.insert(self.getNode(root, dir))
             self.mark_frontier(self.getNode(root, dir))
-            self.frontier_nodes.sortQueue(Node.getf)
 
 
 
@@ -233,20 +232,22 @@ class Agent:
             if node_to_expand.getState() not in [n.getState() for n in self.visited_nodes.getQueue()]:
                 self.visited_nodes.insert(node_to_expand)
                 self.mark_visited(node_to_expand)
+                if node_to_expand.getState() == self.goalNodePos:
+                    node = node_to_expand
+                    node_list = []
+                    while node.getPathCost() != 0:
+                        node_list.insert(0, [node.getState(), node.getPathCost()])
+                        node = node.getParent()
+                    return node_list
 
             for dir in ["north", "east", "west", "south"]:
                 new_node = self.getNode(node_to_expand, dir)
                 if new_node.getState() not in [n.getState() for n in self.frontier_nodes.getQueue()]\
-                        and new_node.getState() not in [n.getState() for n in self.visited_nodes.getQueue()]:
+                        and new_node.getState() not in [n.getState() for n in self.visited_nodes.getQueue()] \
+                        and self.isVisitable(*new_node.getState()):
                     self.frontier_nodes.insert(new_node)
                     self.mark_frontier(new_node)
-                    if new_node.getState() == self.goalNodePos:
-                        node = new_node
-                        node_list = []
-                        while node.getPathCost() != 0:
-                            node_list.insert(0, [node.getState(), node.getPathCost()])
-                            node = node.getParent()
-                        return node_list
+
 
         input("Waiting for return!")
 

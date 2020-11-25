@@ -62,7 +62,7 @@ class Agent:
         self.goalNodePos =(0,0)
         self.state = (0,0)
         self.maxCoord = (0,0)
-
+        self.obstacles = self.getObstacles()
 
 
     def getConnection(self):
@@ -106,14 +106,10 @@ class Agent:
         print('Received map of obstacles:', obst)
         return obst
 
-    # COM MODIFICAÇÕES NO SERVIDOR
-    def getObjectsAt(self, x, y):
-        msg = self.c.execute("info", str(x)+","+str(y))
-        return ast.literal_eval(msg)
 
     # COM MODIFICAÇÕES NO SERVIDOR
     def isVisitable(self, x, y):
-        return all(obj != "obstacle" and obj != "bomb" for obj in self.getObjectsAt(x,y))
+        return self.obstacles[x][y] == 0
 
     def step(self,pos,action):
         if action == "east":
