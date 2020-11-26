@@ -123,6 +123,10 @@ class Agent:
     def isVisitable(self, x, y):
         return self.obstacles[x][y] == 0
 
+
+    def isInVisitable(self,x,y):
+        return  self.obstacles[x][y]==None
+
     def step(self,pos,action):
         if action == "east":
             if pos[0] + 1 < self.maxCoord[0]:

@@ -10,7 +10,6 @@ class Server(BaseException):
     def __init__(self, host_ip, port_number, config):
         self.host = host_ip
         self.port = port_number
-
         self.config = config
 
         if "use_maps?" in config and config["use_maps?"]:
