@@ -8,7 +8,6 @@ VISITED_COLOR = "#400000"
 FRONTIER_COLOR = "red3"
 
 # AUXILIAR
-
 class Queue:
     def __init__(self, funcao_ordenacao):
         self.queue_data = []
@@ -34,7 +33,6 @@ class Queue:
 #        return self.queue_data.sort(key=key)
 
 # SEARCH AGENT
-
 class Node:
     def __init__(self,state,parent,action,path_cost,f):
         self.state = state
@@ -61,7 +59,6 @@ class Node:
     def getParent(self):
         return self.parent
 
-
 class Agent:
     def __init__(self):
         self.c = client.Client('127.0.0.1', 50001)
@@ -74,10 +71,6 @@ class Agent:
         self.state = (0,0)
         self.maxCoord = (0,0)
         self.obstacles = self.getObstacles()
-
-
-
-
 
     def getConnection(self):
         return self.res
@@ -158,10 +151,8 @@ class Agent:
     def distancia(self,x1,y1):
         """metodo calcular a distancia"""
         x2, y2=self.getGoalPosition()
-        return math.sqrt(abs(x1-x2)**2+ abs(y1-y2)**2)
-
-
-
+        #return math.sqrt(abs(x1-x2)**2+ abs(y1-y2)**2)
+        return abs(x1-x2)+ abs(y1-y2)
 
     def getNode(self,parent_node,action):
         state = self.step(parent_node.getState(),action)
@@ -174,9 +165,6 @@ class Agent:
         print("state | path cost | f(n)")
         for node in nodes.getQueue():
             print(node.getState(),"|", node.getPathCost(), "|", node.getf())
-
-
-
 
     def printPath(self, node):
         n = node
@@ -215,12 +203,8 @@ class Agent:
             self.frontier_nodes.insert(self.getNode(root, dir))
             self.mark_frontier(self.getNode(root, dir))
 
-
-
         # test
         #ordenar a lista de nós fronteira
-
-
         self.printNodes("Frontier", self.frontier_nodes, i)
         self.printNodes("Visitied", self.visited_nodes, i)
 
@@ -295,7 +279,6 @@ class Agent:
 
     def getSelfDirection(self):
         return self.c.execute("info", "direction")
-
 
 #STARTING THE PROGRAM:
 def main():
