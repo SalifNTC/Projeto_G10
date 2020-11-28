@@ -2,6 +2,7 @@ import client
 import ast
 import random
 import math
+import time
 
 VISITED_COLOR = "#400000"
 FRONTIER_COLOR = "red3"
@@ -157,7 +158,7 @@ class Agent:
     def distancia(self,x1,y1):
         """metodo calcular a distancia"""
         x2, y2=self.getGoalPosition()
-        return  abs(x1-x2)+ abs(y1-y2)
+        return math.sqrt(abs(x1-x2)**2+ abs(y1-y2)**2)
 
 
 
@@ -224,7 +225,6 @@ class Agent:
         self.printNodes("Visitied", self.visited_nodes, i)
 
 
-
         # Cycle expanding nodes following the sequence in frontier nodes.
         while self.goalNodePos!=self.state:
 
@@ -251,9 +251,7 @@ class Agent:
                         and self.isVisitable(*new_node.getState()):
                     self.frontier_nodes.insert(new_node)
                     self.mark_frontier(new_node)
-
-
-        input("Waiting for return!")
+        #input("Waiting for return!")
 
     def turn_and_go(self, direction):
         if direction == "south":
@@ -293,7 +291,7 @@ class Agent:
                 self.turn_and_go("east")  # , "north", "south", "west")
             else:
                 self.turn_and_go("west")  # , "south", "north", "east")
-        input("Waiting for return")
+        #input("Waiting for return")
 
     def getSelfDirection(self):
         return self.c.execute("info", "direction")
@@ -303,8 +301,12 @@ class Agent:
 def main():
     print("Starting client!")
     ag = Agent()
+    start = time.time()
     if ag.getConnection() != -1:
         path = ag.think()
+        elapsed = time.time() - start
+        print("O cálculo do caminho demorou " + str(elapsed) + " segundos")
+        input("Press enter")
         if path is not None:
             ag.do(path)
         else:
